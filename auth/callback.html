@@ -1,0 +1,26 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>alibot1 – TikTok OAuth Callback</title>
+<style>
+  body{font-family:system-ui;max-width:720px;margin:40px auto;padding:0 16px;line-height:1.6}
+  code,pre{background:#f6f7fb;padding:8px 10px;border-radius:8px;display:block;overflow:auto}
+</style>
+<h2>Login complete</h2>
+<p>Returned from TikTok. If you see a code below, the redirect works.</p>
+<pre id="out">Waiting…</pre>
+<script>
+  const q=new URLSearchParams(location.search);
+  const code=q.get('code');
+  const state=q.get('state');
+  const err=q.get('error');
+  const desc=q.get('error_description');
+  const out=document.getElementById('out');
+  if(err){ out.textContent = `Error: ${err}\n${desc||''}`; }
+  else if(code){
+    sessionStorage.setItem('tiktok_code', code);
+    sessionStorage.setItem('tiktok_state', state||'');
+    out.textContent = `Got code: ${code}\nstate: ${state||''}\nYou can close this tab.`;
+  }else{
+    out.textContent = 'No code found in URL (missing ?code=…).';
+  }
+</script>
